@@ -1,0 +1,14 @@
+{
+  "name": "meal_rp",
+  "version": "1.0.0",
+  "description": "JS app to manage meals, recipes, and ingredients",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bradley Quangson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
