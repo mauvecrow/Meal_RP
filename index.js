@@ -1,20 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const { router: mpRouter } = require('./controllers/MealPlanController.js')
+
 const app = express();
 const port = 3000;
 
 const dbUrl = process.env.DB_URL;
 
-mongoose.connect(dbUrl)
-    .then( (result) => {
-        console.log("Database connected");
-        app.listen(port, () => {
-            console.log("Listening on port: " + port);
-        })
-    })
-    .catch( err => console.log(err));
+// routes
+app.use("/mealplans", mpRouter);
 
 app.get("/", (req, res) => {
     res.send("Welcome to Meal ERP")
 })
+// middleware
+app.set('view engine', 'ejs');
+
+
+
+// initialization
+const start = async () => {
+    try {
+        await mongoose.connect(dbUrl)
+        console.log("Database connected");
+        app.listen(port, () => {
+            console.log("Listening on port: " + port);
+        })
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+start();
