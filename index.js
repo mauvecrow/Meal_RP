@@ -15,7 +15,8 @@ app.get("/", (req, res) => {
     res.send("Welcome to Meal ERP")
 })
 // middleware
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
 
 
 
