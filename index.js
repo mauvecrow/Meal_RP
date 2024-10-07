@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { router: mpRouter } = require('./controllers/MealPlanController.js')
+const mealplanRouter = require('./mealplan/routes.js')
 
 const app = express();
 const port = 3000;
@@ -9,10 +9,10 @@ const port = 3000;
 const dbUrl = process.env.DB_URL;
 
 // routes
-app.use("/mealplans", mpRouter);
+app.use("/mealplans", mealplanRouter);
 
 app.get("/", (req, res) => {
-    res.send("Welcome to Meal ERP")
+    res.render("home");
 })
 // middleware
 // app.set('view engine', 'ejs');
