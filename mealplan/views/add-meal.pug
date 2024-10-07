@@ -1,0 +1,10 @@
+h1 Add new meal 
+div 
+    h1= doc._id 
+    h2= doc.date
+    form(method=post action='/meal-plan')
+        label(for='new-name') Name
+        input(type=text id='new-name' name='meal-name')
+        label(for='new-tag') Tags
+        input(type=text id='new-tag' name='meal-tags')
+        button(type=submit) Create
