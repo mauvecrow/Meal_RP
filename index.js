@@ -8,15 +8,19 @@ const port = 3000;
 
 const dbUrl = process.env.DB_URL;
 
+// middleware
+// app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
+app.use(express.urlencoded({ extended: true }));
+
+
 // routes
 app.use("/mealplans", mealplanRouter);
 
 app.get("/", (req, res) => {
     res.render("home");
 })
-// middleware
-// app.set('view engine', 'ejs');
-app.set('view engine', 'pug');
+
 
 
 
