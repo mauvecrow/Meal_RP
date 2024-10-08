@@ -46,15 +46,27 @@ const getAll = async (req, res) => {
 }
 
 const getNewMeal = async (req, res) => {
+    // TODO: need to guard and validate
     const doc = await MealPlan.findById(req.query.objId);
 
     const viewName = 'add-meal';
     const viewPath = path.join(viewsRoot, viewName);
 
-    res.render(viewPath, { doc });
+    res.render(viewPath, { doc, mealType: req.query.type });
+}
+
+const postNewMeal = async (req, res) => {
+    let { 'meal-name': name, 'meal-tags': tags, 'doc-id': id, mealType } = req.body;
+
+    let mealInfo = { name: name, tags: tags.split(",") }
+    let meal = { [mealType]: mealInfo }
+    // console.log(meal);
+    await MealPlan.updateOne({ "_id": id }, meal)
+    res.redirect('/mealplans')
 }
 
 module.exports = {
     getAll,
-    getNewMeal
+    getNewMeal,
+    postNewMeal
 }

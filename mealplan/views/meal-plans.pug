@@ -9,9 +9,12 @@ body
         each mp in mealplans
             li
                 div 
+                    - let breafastDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=breakfast'>add breakfast</a>`
+                    - let lunchDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=lunch'>add lunch</a>`
+                    - let dinnerDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=dinner'>add dinner</a>`
                     h3= dayConverter(mp.date.getDay())
-                    p!= mp.breakfast || `<a href='mealplans/new-meal?objId=${mp._id}'>add breakfast</a>`
+                    p!= mp.breakfast || breafastDefault
                     |
-                    p= mp.lunch || "add lunch"
+                    p!= mp.lunch || lunchDefault
                     | 
-                    p= mp.dinner || "add dinner"
+                    p!= mp.dinner || dinnerDefault
