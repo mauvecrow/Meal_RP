@@ -3,18 +3,38 @@ html
 head 
     title Meal Plans 
 body  
-    h1 Meal Plans 
-    ul 
-        //- need to indent "each" in order to have "li" inside the "ul" properly. Note this comment also needs to be indented, otherwise it comments below lines
-        each mp in mealplans
-            li
-                div 
-                    - let breafastDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=breakfast'>add breakfast</a>`
-                    - let lunchDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=lunch'>add lunch</a>`
-                    - let dinnerDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=dinner'>add dinner</a>`
-                    h3= dayConverter(mp.date.getDay())
-                    p!= mp.breakfast || breafastDefault
-                    |
-                    p!= mp.lunch || lunchDefault
-                    | 
-                    p!= mp.dinner || dinnerDefault
+    h1 Meal Plans
+    div 
+        h2 Search 
+        label(for='search-period-month') Month
+        input(type="text", id='search-period-month', name='period-month')
+        label(for='search-period-year') Year
+        input(type="text", id='search-period-year', name='period-year')
+        button(type=button) Find
+         
+    div 
+        ul 
+            //- need to indent "each" in order to have "li" inside the "ul" properly. Note this comment also needs to be indented, otherwise it comments below lines
+            - let mpArr = Array.from(mealplans.entries())
+            - console.clear()
+            //- - console.log(mpArr)
+            each entry in mpArr
+                - let [dayNum, mp] = entry
+                li
+                    if mp
+                        div 
+                            - let breafastDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=breakfast'>add breakfast</a>`
+                            - let lunchDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=lunch'>add lunch</a>`
+                            - let dinnerDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=dinner'>add dinner</a>`
+                            h3= dayConverter(dayNum)
+                            p!= mp.breakfast || breafastDefault
+                            
+                            p!= mp.lunch || lunchDefault
+                            
+                            p!= mp.dinner || dinnerDefault
+                    else 
+                        div 
+                            h3= dayConverter(dayNum)
+                            p no meal plan. create one
+            else 
+                h3 no map
