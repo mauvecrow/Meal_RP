@@ -29,20 +29,20 @@ const dayConverter = (num) => {
 
 const getAll = async (req, res) => {
     let mealplans = new Map([
-        [0, {}], // sunday
-        [1, {}], // monday
-        [2, {}], // tuesday
-        [3, {}], // wednesday
-        [4, {}], // thursday
-        [5, {}], // friday
-        [6, {}], // saturday
+        [0, null], // sunday
+        [1, null], // monday
+        [2, null], // tuesday
+        [3, null], // wednesday
+        [4, null], // thursday
+        [5, null], // friday
+        [6, null], // saturday
     ]);
     try {
         // await setup();
         let today = new Date();
         let sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
         let saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay()));
-        let mps = await MealPlan.find({})
+        let mps = await MealPlan.find(null)
             .where('date').gte(sunday)
             .where('date').lte(saturday)
             .sort('date');
