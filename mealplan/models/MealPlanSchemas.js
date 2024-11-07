@@ -32,6 +32,11 @@ const MealSchema = new Schema({
 })
 const MealPlanSchema = new Schema({
     date: { type: Date, unique: true, required: true },
+    period: {
+        number: Number,
+        year: Number,
+        value: String
+    },
     breakfast: MealSchema,
     lunch: MealSchema,
     dinner: MealSchema,
