@@ -38,4 +38,15 @@ const start = async () => {
     }
 }
 
-start();
+// start();
+
+const getDocs = require('./scratch/mongo1.js');
+const results = async () => {
+    await mongoose.connect(dbUrl)
+    const docs = await getDocs();
+    let first = docs[0];
+    let firstDate = first.date;
+    console.log(firstDate);
+    console.log("get date: " + firstDate.getDay())
+}
+results();
