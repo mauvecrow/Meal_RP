@@ -28,12 +28,30 @@ const dayConverter = (num) => {
 }
 
 const getAll = async (req, res) => {
-    let mealplans = [];
+    let mealplans = new Map([
+        [0, {}], // sunday
+        [1, {}], // monday
+        [2, {}], // tuesday
+        [3, {}], // wednesday
+        [4, {}], // thursday
+        [5, {}], // friday
+        [6, {}], // saturday
+    ]);
     try {
         // await setup();
+        let today = new Date();
+        let sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+        let saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay()));
         let mps = await MealPlan.find({})
+            .where('date').gte(sunday)
+            .where('date').lte(saturday)
+            .sort('date');
         // console.dir(mps[0]);
-        mealplans = [...mps];
+        for (let mp of mps) {
+            if (mealplans.has(mp.getDay())) {
+                mealplans.set(mp.getDay(), mp)
+            }
+        }
     }
     catch (err) {
         console.log(err);
