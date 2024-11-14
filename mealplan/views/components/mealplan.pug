@@ -1,0 +1,11 @@
+div(class=itemClass)
+    - let breafastDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=breakfast'>add breakfast</a>`
+    - let lunchDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=lunch'>add lunch</a>`
+    - let dinnerDefault = `<a href='mealplans/new-meal?objId=${mp._id}&type=dinner'>add dinner</a>`
+    h2= mp.period.value
+    h3= dayConverter(mp.date.getDay())
+    p!= mp.breakfast || breafastDefault
+    
+    p!= mp.lunch || lunchDefault
+    
+    p!= mp.dinner || dinnerDefault
