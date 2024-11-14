@@ -28,30 +28,33 @@ const dayConverter = (num) => {
 }
 
 const getAll = async (req, res) => {
-    let mealplans = new Map([
-        [0, null], // sunday
-        [1, null], // monday
-        [2, null], // tuesday
-        [3, null], // wednesday
-        [4, null], // thursday
-        [5, null], // friday
-        [6, null], // saturday
-    ]);
+    let qp = req.query;
+    // searchDate should be in YYYY-MM-DD format
+    let today = qp.searchDate ? new Date(qp.searchDate) : new Date();
+    let sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    let saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay()));
+    let mealplans = new Map();
+    for (let i = 0; i < 7; i++) {
+        mealplans.set(new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + i).toLocaleDateString(), null);
+    }
+
     try {
         // await setup();
-        let today = new Date();
-        let sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
-        let saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay()));
-        let mps = await MealPlan.find(null)
+        // need to validate searchDate is in a good format
+
+        let mps = await MealPlan.find({})
             .where('date').gte(sunday)
             .where('date').lte(saturday)
             .sort('date');
         // console.dir(mps[0]);
         for (let mp of mps) {
-            if (mealplans.has(mp.getDay())) {
-                mealplans.set(mp.getDay(), mp)
+            // console.log(mp);
+            if (mealplans.has(mp.date.toLocaleDateString())) {
+                mealplans.set(mp.date.toLocaleDateString(), mp)
             }
         }
+
+        // console.log(mealplans)
     }
     catch (err) {
         console.log(err);
@@ -83,8 +86,35 @@ const postNewMeal = async (req, res) => {
     res.redirect('/mealplans')
 }
 
+
+const postNewMealPlan = async (req, res) => {
+    let { 'meal-date': rawDate } = req.body; //eg 11/3/2024
+    let sdate = rawDate.split("/");
+    let date = new Date(sdate[2], sdate[0] - 1, sdate[1]) //note month is zero based, hence -1
+    const mealplanObj = {
+        date: date,
+        period: {
+            number: sdate[0],
+            year: sdate[2],
+            value: rawDate
+        },
+        breakfast: null,
+        lunch: null,
+        dinner: null,
+        snacks: null
+    };
+
+    const mp = await MealPlan.create(mealplanObj);
+
+    const viewName = 'mealplan';
+    const viewPath = path.join(viewsRoot, "components", viewName);
+
+    res.render(viewPath, { mp, dayConverter });
+}
+
 module.exports = {
     getAll,
     getNewMeal,
-    postNewMeal
+    postNewMeal,
+    postNewMealPlan
 }
