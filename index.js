@@ -12,7 +12,10 @@ const dbUrl = process.env.DB_URL;
 // app.set('view engine', 'ejs');
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
+// static folder
+app.use(express.static('public'))
 
 // routes
 app.use("/mealplans", mealplanRouter);
@@ -38,15 +41,15 @@ const start = async () => {
     }
 }
 
-// start();
+start();
 
-const getDocs = require('./scratch/mongo1.js');
-const results = async () => {
-    await mongoose.connect(dbUrl)
-    const docs = await getDocs();
-    let first = docs[0];
-    let firstDate = first.date;
-    console.log(firstDate);
-    console.log("get date: " + firstDate.getDay())
-}
-results();
+// const getDocs = require('./scratch/mongo1.js');
+// const results = async () => {
+//     await mongoose.connect(dbUrl)
+//     const docs = await getDocs();
+//     let first = docs[0];
+//     let firstDate = first.date;
+//     console.log(firstDate);
+//     console.log("get date: " + firstDate.getDay())
+// }
+// results();
