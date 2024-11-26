@@ -27,7 +27,7 @@ const dayConverter = (num) => {
     }
 }
 
-const getAll = async (req, res) => {
+exports.getAll = async (req, res) => {
     let qp = req.query;
     // searchDate should be in YYYY-MM-DD format
     let today = qp.searchDate ? new Date(qp.searchDate) : new Date();
@@ -66,7 +66,7 @@ const getAll = async (req, res) => {
     res.render(viewPath, { mealplans, dayConverter });
 }
 
-const getNewMeal = async (req, res) => {
+exports.getNewMeal = async (req, res) => {
     // TODO: need to guard and validate
     const doc = await MealPlan.findById(req.query.objId);
 
@@ -76,7 +76,7 @@ const getNewMeal = async (req, res) => {
     res.render(viewPath, { doc, mealType: req.query.type });
 }
 
-const postNewMeal = async (req, res) => {
+exports.postNewMeal = async (req, res) => {
     let { 'meal-name': name, 'meal-tags': tags, 'doc-id': id, mealType } = req.body;
 
     let mealInfo = { name: name, tags: tags.split(",") }
@@ -87,7 +87,7 @@ const postNewMeal = async (req, res) => {
 }
 
 
-const postNewMealPlan = async (req, res) => {
+exports.postNewMealPlan = async (req, res) => {
     let { 'meal-date': rawDate } = req.body; //eg 11/3/2024
     let sdate = rawDate.split("/");
     let date = new Date(sdate[2], sdate[0] - 1, sdate[1]) //note month is zero based, hence -1
@@ -110,11 +110,4 @@ const postNewMealPlan = async (req, res) => {
     const viewPath = path.join(viewsRoot, "components", viewName);
 
     res.render(viewPath, { mp, dayConverter });
-}
-
-module.exports = {
-    getAll,
-    getNewMeal,
-    postNewMeal,
-    postNewMealPlan
 }
